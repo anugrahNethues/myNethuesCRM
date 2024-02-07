@@ -1,11 +1,12 @@
 // import Task from "@/models/task";
-import { useSelector } from "react-redux";
+//react-redux package allows our react application to connect with the redux store
+import { useAppSelector } from "@/store/hooks";
 
 const Tasks = () => {
-  const tasks = useSelector((state) => state.tasks);
+  const tasks = useAppSelector((state) => state.tasks);
   return (
     <div className="border-2 border-b-0 border-gray-300 mx-4 my-10">
-      {tasks.map((task) => (
+      {tasks.map((task: any) => (
         <div
           key={task.id}
           className="flex justify-between p-4 border-b-2 border-b-gray-300"

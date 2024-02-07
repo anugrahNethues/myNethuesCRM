@@ -1,9 +1,9 @@
-import TaskForm from "@/components/TaskForm";
+import Timer from "@/components/Timer";
 
 export default function Home() {
   return (
     <>
-      <TaskForm />
+      <Timer />
     </>
   );
 }
