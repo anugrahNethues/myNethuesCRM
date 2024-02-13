@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-
 import { useAppDispatch } from "@/store/hooks";
 import { entriesActions } from "@/store/store";
 
@@ -8,7 +7,10 @@ import TaskForm from "./TaskForm";
 
 let interval: ReturnType<typeof setInterval>;
 
-const Timer: React.FC = () => {
+let taskName: string;
+let taskCategory: string;
+
+const Timer = () => {
   const dispatch = useAppDispatch();
 
   const [isStarted, setIsStarted] = useState(false);
@@ -19,6 +21,11 @@ const Timer: React.FC = () => {
   const minutes = Math.floor(time / 60) % 60;
   const hours = Math.floor(time / 3600);
 
+  const sendFormDetails = (name: string, category: string) => {
+    taskName = name;
+    taskCategory = category;
+  };
+
   useEffect(() => {
     if (isStarted) {
       interval = setInterval(() => {
@@ -27,9 +34,6 @@ const Timer: React.FC = () => {
       setDate(new Date());
     } else {
       if (date) {
-        const form = document.querySelector("form") as HTMLFormElement;
-        const fd = new FormData(form);
-        const data = Object.fromEntries(fd.entries());
         const startingHours = date.getHours();
         const startingMinutes = date.getMinutes();
         let endingHours = startingHours + hours;
@@ -42,8 +46,8 @@ const Timer: React.FC = () => {
 
         const newEntry = {
           id: Math.random() * 1000,
-          taskName: data.taskName,
-          taskCategory: data.taskCategory,
+          taskName: taskName,
+          taskCategory: taskCategory,
           startTime: `${startingHours}:${startingMinutes}`,
           endTime: `${endingHours}:${endingMinutes}`,
           totalTime: `${hours}:${minutes}`,
@@ -52,7 +56,6 @@ const Timer: React.FC = () => {
         //dispatching action to update tasks with a new task
         dispatch(entriesActions.addEntry(newEntry));
 
-        form.reset();
         setTime(0);
       }
     }
@@ -64,29 +67,28 @@ const Timer: React.FC = () => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
-    if (isStarted) {
-      setIsStarted(false);
-    } else {
-      setIsStarted(true);
-    }
+    setIsStarted(false);
   };
 
   const handleReset = () => {
     setTime(0);
-    // clearInterval(interval);
     setDate(null);
     setIsStarted(false);
   };
 
+  const handleStart = () => {
+    setIsStarted(true);
+  };
+
   return (
     <TaskForm
-      isStarted={isStarted}
-      handleSubmit={handleSubmit}
+      onFormSubmit={handleSubmit}
       handleReset={handleReset}
       seconds={seconds}
       hours={hours}
       minutes={minutes}
+      sendFormDetails={sendFormDetails}
+      onStart={handleStart}
     />
   );
 };

@@ -12,8 +12,8 @@ if (typeof localStorage !== "undefined") {
 
 export type task = {
   id: number;
-  taskName: FormDataEntryValue;
-  taskCategory: FormDataEntryValue;
+  taskName: string;
+  taskCategory: string;
   startTime: string;
   endTime: string;
   totalTime: string;
@@ -46,7 +46,6 @@ const saveState = (state: task[]) => {
   if (typeof localStorage !== "undefined") {
     localStorage.setItem("taskEntries", JSON.stringify(state));
   }
-  // localStorage.setItem("taskEntries", JSON.stringify(state));
 };
 
 store.subscribe(() => {

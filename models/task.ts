@@ -1,13 +1,13 @@
 class Task {
-  taskName: FormDataEntryValue;
-  taskCategory: FormDataEntryValue;
+  taskName: string;
+  taskCategory: string;
   startTime: string;
   endTime: string;
   totalTime: string;
 
   constructor(
-    taskName: FormDataEntryValue,
-    taskCategory: FormDataEntryValue,
+    taskName: string,
+    taskCategory: string,
     startTime: string,
     endTime: string,
     totalTime: string
